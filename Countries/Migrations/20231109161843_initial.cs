@@ -5,7 +5,7 @@
 namespace Countries.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,14 +29,16 @@ namespace Countries.Migrations
                 name: "Countries",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Bandera = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Continente = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Capital = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tid = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Capitals = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SubRegion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Area = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Poblacion = table.Column<int>(type: "int", nullable: false)
+                    Area = table.Column<double>(type: "float", nullable: false),
+                    Population = table.Column<int>(type: "int", nullable: false),
+                    Continents = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Flags = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

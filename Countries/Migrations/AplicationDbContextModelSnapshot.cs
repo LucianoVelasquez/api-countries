@@ -45,32 +45,34 @@ namespace Countries.Migrations
 
             modelBuilder.Entity("Countries.Entidades.Country", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Area")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Area")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Capitals")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Bandera")
-                        .IsRequired()
+                    b.Property<string>("Continents")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Capital")
-                        .IsRequired()
+                    b.Property<string>("Flags")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Continente")
-                        .IsRequired()
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Poblacion")
+                    b.Property<int>("Population")
                         .HasColumnType("int");
 
                     b.Property<string>("SubRegion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tid")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

@@ -21,6 +21,7 @@ namespace Countries
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();
+            services.AddAutoMapper(typeof(Startup));
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
