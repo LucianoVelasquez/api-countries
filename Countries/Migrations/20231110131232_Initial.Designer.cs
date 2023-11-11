@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Countries.Migrations
 {
     [DbContext(typeof(AplicationDbContext))]
-    [Migration("20231109161843_initial")]
-    partial class initial
+    [Migration("20231110131232_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,6 +81,53 @@ namespace Countries.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("Countries.Entidades.CountryActivity", b =>
+                {
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ActivityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CountryTid")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CountryId", "ActivityId");
+
+                    b.HasIndex("ActivityId");
+
+                    b.ToTable("CountryActivities");
+                });
+
+            modelBuilder.Entity("Countries.Entidades.CountryActivity", b =>
+                {
+                    b.HasOne("Countries.Entidades.Activity", "Activity")
+                        .WithMany("CountryActivities")
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Countries.Entidades.Country", "Country")
+                        .WithMany("CountryActivities")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Activity");
+
+                    b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("Countries.Entidades.Activity", b =>
+                {
+                    b.Navigation("CountryActivities");
+                });
+
+            modelBuilder.Entity("Countries.Entidades.Country", b =>
+                {
+                    b.Navigation("CountryActivities");
                 });
 #pragma warning restore 612, 618
         }

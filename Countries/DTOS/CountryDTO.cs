@@ -4,19 +4,14 @@ namespace Countries.DTOS
 {
     public class CountryDTO
     {
-        [Required]
-        public string Id { get; set; }
-        [Required]
-        public string Nombre { get; set; }
-        [Required]
-        public string Bandera { get; set; }
-        [Required]
-        public string Continente { get; set; }
-        [Required]
-        public string Capital { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Tid { get; set; }
+        public string Capitals { get; set; }
         public string SubRegion { get; set; }
-        public string Area { get; set; }
-        [Required]
-        public int Poblacion { get; set; }
+        public double Area { get; set; }
+        public int Population { get; set; }
+        public string Continents { get; set; }
+        public string Flags { get; set; }
     }
 }

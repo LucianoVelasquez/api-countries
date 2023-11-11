@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Countries.Entidades
+namespace Countries.DTOS
 {
-    public class Activity
+    public class ActivityDTO
     {
         public int Id { get; set; }
         [Required]
@@ -10,6 +10,5 @@ namespace Countries.Entidades
         [Required]
         public int Duracion { get; set; }
         public string Temporada { get; set; }
-        public List<CountryActivity> CountryActivities { get; set; }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Countries.Entidades
+namespace Countries.DTOS
 {
-    public class Activity
+    public class CreacionActivityDTO
     {
-        public int Id { get; set; }
-        [Required]
+
         public int Dificultad { get; set; }
         [Required]
         public int Duracion { get; set; }
         public string Temporada { get; set; }
-        public List<CountryActivity> CountryActivities { get; set; }
+        public List<int> CountryIds { get; set; }
     }
 }
