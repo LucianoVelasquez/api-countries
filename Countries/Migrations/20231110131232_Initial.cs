@@ -5,7 +5,7 @@
 namespace Countries.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -44,11 +44,44 @@ namespace Countries.Migrations
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "CountryActivities",
+                columns: table => new
+                {
+                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    ActivityId = table.Column<int>(type: "int", nullable: false),
+                    CountryTid = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CountryActivities", x => new { x.CountryId, x.ActivityId });
+                    table.ForeignKey(
+                        name: "FK_CountryActivities_Activities_ActivityId",
+                        column: x => x.ActivityId,
+                        principalTable: "Activities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CountryActivities_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CountryActivities_ActivityId",
+                table: "CountryActivities",
+                column: "ActivityId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CountryActivities");
+
             migrationBuilder.DropTable(
                 name: "Activities");
 

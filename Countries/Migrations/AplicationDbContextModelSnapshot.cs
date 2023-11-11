@@ -79,6 +79,53 @@ namespace Countries.Migrations
 
                     b.ToTable("Countries");
                 });
+
+            modelBuilder.Entity("Countries.Entidades.CountryActivity", b =>
+                {
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ActivityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CountryTid")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CountryId", "ActivityId");
+
+                    b.HasIndex("ActivityId");
+
+                    b.ToTable("CountryActivities");
+                });
+
+            modelBuilder.Entity("Countries.Entidades.CountryActivity", b =>
+                {
+                    b.HasOne("Countries.Entidades.Activity", "Activity")
+                        .WithMany("CountryActivities")
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Countries.Entidades.Country", "Country")
+                        .WithMany("CountryActivities")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Activity");
+
+                    b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("Countries.Entidades.Activity", b =>
+                {
+                    b.Navigation("CountryActivities");
+                });
+
+            modelBuilder.Entity("Countries.Entidades.Country", b =>
+                {
+                    b.Navigation("CountryActivities");
+                });
 #pragma warning restore 612, 618
         }
     }

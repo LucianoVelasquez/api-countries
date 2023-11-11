@@ -1,4 +1,5 @@
-﻿using Countries.Entidades;
+﻿using AutoMapper;
+using Countries.DTOS;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,45 +7,58 @@ namespace Countries.Controllers
 {
     [ApiController]
     [Route("api/countries")]
-    public class CountriesController :ControllerBase
+    public class CountriesController : ControllerBase
     {
         private readonly AplicationDbContext dbContext;
+        private readonly IMapper mapper;
 
-        public CountriesController(AplicationDbContext dbContext)
+        public CountriesController(AplicationDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Country>>> GetAllCountry()
+        public async Task<ActionResult<List<CountryDTO>>> GetAllCountry()
         {
             var countries = await dbContext.Countries.ToListAsync();
 
-            if(countries.Count == 0) { BadRequest(); }
+            if (countries.Count == 0) { BadRequest(); }
 
-            return Ok(countries);
+            var dto = mapper.Map<List<CountryDTO>>(countries);
+
+            return Ok(dto);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Country>> GetCountryId(string id)
+        public async Task<ActionResult<List<CountryDTO>>> GetCountryId(string id)
         {
             id = "." + id;
-            var country = await dbContext.Countries.SingleOrDefaultAsync(c => c.Tid.ToLower() == id.ToLower());
+            var countries = await dbContext.Countries
+                .Where(c => c.Tid.ToLower().StartsWith(id.ToLower()))
+                .ToListAsync();
 
-            if(country == null) { return BadRequest("No se encontro pais con ese Id"); }
+            if (countries.Count == 0) { return NotFound("No se encontro pais con ese Id"); }
 
-            return Ok(country);
+            var dto = mapper.Map<List<CountryDTO>>(countries);
+
+            return Ok(dto);
         }
 
         [HttpGet("country")]
-        public async Task<ActionResult<Country>> GetCountryName([FromQuery] string name)
-        { 
-            
-            var country = await dbContext.Countries.SingleOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
+        public async Task<ActionResult<List<CountryDTO>>> GetCountryName([FromQuery] string name)
+        {
+            if(name == null) { return BadRequest("Nombre incorrecto"); }
 
-            if (country == null) { return BadRequest("No se encontro pais con ese Name"); }
+            var countries = await dbContext.Countries
+                   .Where(c => c.Name.ToLower().StartsWith(name.ToLower()))
+                   .ToListAsync();
 
-            return Ok(country);
+            if (countries.Count == 0) { return NotFound("No se encontro pais con ese Name"); }
+
+            var dto = mapper.Map<List<CountryDTO>>(countries);
+
+            return Ok(dto);
         }
     }
 }
